@@ -1,3 +1,3 @@
 SCM_SOURCE=https://github.com/nginxinc/docker-nginx.git
 SCM_TARGET=modules/$PROJECT
-SCM_COMMIT=80d4df4c9dac780f8906c96928fac484c6559b20
+SCM_COMMIT=491f994f1a97a002745a6d19eff343e14b149321
