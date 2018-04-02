@@ -14,8 +14,15 @@ RUN        deluser                 xfs               \
  &&        addgroup -g 33 -S       www-data          \
  &&        adduser  -u 33 -D -S -G www-data www-data
 
+RUN        apk --no-cache add nginx-mod-http-headers-more
+
 RUN        mkdir  conf-available.d conf-global.d \
  &&        rm -rf conf.d/*
+
+COPY       nginx/nginx.conf   .
+COPY       nginx/vconf/*.conf conf-global.d/
+COPY       nginx/vhost/*.conf conf-available.d/
+COPY       nginx/vhost/conf   conf
 
 COPY       bin/docker-entrypoint.sh /usr/local/bin/
 
