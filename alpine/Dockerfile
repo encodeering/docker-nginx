@@ -10,6 +10,10 @@ ENV        NGINX_CONFDIR=/etc/nginx
 
 WORKDIR    ${NGINX_CONFDIR}
 
+RUN        deluser                 xfs               \
+ &&        addgroup -g 33 -S       www-data          \
+ &&        adduser  -u 33 -D -S -G www-data www-data
+
 RUN        mkdir  conf-available.d conf-global.d \
  &&        rm -rf conf.d/*
 
