@@ -14,7 +14,7 @@ RUN        deluser                 xfs               \
  &&        addgroup -g 33 -S       www-data          \
  &&        adduser  -u 33 -D -S -G www-data www-data
 
-RUN        apk --no-cache add nginx-mod-http-headers-more
+RUN        apk --no-cache fetch -q --stdout nginx-mod-http-headers-more | tar -xvz -C / --exclude '.*'
 
 RUN        mkdir  conf-available.d conf-global.d \
  &&        rm -rf conf.d/*
