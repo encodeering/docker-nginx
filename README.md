@@ -7,10 +7,10 @@
 
 - https://hub.docker.com/r/encodeering/nginx-armhf/
 
-    ```docker pull encodeering/nginx-armhf:1.12-debian```  
-    ```docker pull encodeering/nginx-armhf:1.12-alpine```
+    ```docker pull encodeering/nginx-armhf:1.14-debian```  
+    ```docker pull encodeering/nginx-armhf:1.14-alpine```
 
 - https://hub.docker.com/r/encodeering/nginx-amd64/
 
-    ```docker pull encodeering/nginx-amd64:1.12-debian```  
-    ```docker pull encodeering/nginx-amd64:1.12-alpine```
+    ```docker pull encodeering/nginx-amd64:1.14-debian```  
+    ```docker pull encodeering/nginx-amd64:1.14-alpine```
