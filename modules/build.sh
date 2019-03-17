@@ -7,4 +7,4 @@ import com.encodeering.ci.docker
 
 ./build-${BASE}.sh
 
-docker-verify nginx -V
+docker-verify nginx -V 2>&1 | dup | contains "nginx/${VERSION}"
