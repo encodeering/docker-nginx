@@ -8,6 +8,10 @@ if [ `find ${NGINX_CONFDIR}/conf.d ! -name "${VHOST}.*" -type l | wc -l` -gt 0 ]
     exit 1
 fi
 
+mkdir -p             nginx
+chown nginx:www-data nginx
+chmod 750            nginx
+
 ln -s ${NGINX_CONFDIR}/conf-available.d/${VHOST}.conf ${NGINX_CONFDIR}/conf.d || true
 
 exec nginx "$@"
