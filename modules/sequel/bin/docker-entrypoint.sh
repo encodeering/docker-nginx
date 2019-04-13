@@ -3,15 +3,12 @@
 set -e
 set -o pipefail
 
-if [ `find ${NGINX_CONFDIR}/conf.d ! -name "${VHOST}.*" -type l | wc -l` -gt 0 ]; then
-    echo "error: a vhost has already been enabled - VHOST envvar should be treated as effectively immutable"
-    exit 1
-fi
-
 mkdir -p             nginx
 chown nginx:www-data nginx
 chmod 750            nginx
 
-ln -s ${NGINX_CONFDIR}/conf-available.d/${VHOST}.conf ${NGINX_CONFDIR}/conf.d || true
+NGINX_VHOST="${NGINX_CONFDIR}/conf.d/vhost.conf"
+
+cat "${NGINX_CONFDIR}/conf-available.d/${VHOST}.conf" > "${NGINX_VHOST}"
 
 exec nginx "$@"
