@@ -36,14 +36,9 @@ RUN        deluser                 xfs               \
 
 COPY       --from=modules /etc/nginx/modules /etc/nginx/modules
 
-RUN        mkdir  conf-available.d conf-global.d \
- &&        rm -rf conf.d/*
+RUN        rm -rf conf.d/*
 
-COPY       nginx/nginx.conf   .
-COPY       nginx/vconf/*.conf conf-global.d/
-COPY       nginx/vhost/*.conf conf-available.d/
-COPY       nginx/vhost/conf   conf
-
+COPY       nginx/ .
 COPY       bin/docker-entrypoint.sh /usr/local/bin/
 
 RUN        chmod +x /usr/local/bin/docker-entrypoint.sh
