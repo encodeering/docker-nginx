@@ -26,6 +26,8 @@ EXPOSE     80
 EXPOSE     443
 
 ENV        VHOST=ssl-redirect
+ENV        VHOST_CANONICAL=""
+ENV        VHOST_CUSTOMIZATION=false
 ENV        NGINX_CONFDIR=/etc/nginx
 
 WORKDIR    ${NGINX_CONFDIR}
