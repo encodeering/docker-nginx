@@ -3,11 +3,43 @@
 set -e
 set -o pipefail
 
-if [ `find ${NGINX_CONFDIR}/conf.d ! -name "${VHOST}.*" -type l | wc -l` -gt 0 ]; then
-    echo "error: a vhost has already been enabled - VHOST envvar should be treated as effectively immutable"
-    exit 1
-fi
+NGINX_VHOST="${NGINX_CONFDIR}/conf.d/vhost.conf"
 
-ln -s ${NGINX_CONFDIR}/conf-available.d/${VHOST}.conf ${NGINX_CONFDIR}/conf.d || true
+die () {
+    echo "$1"
+    exit 1
+}
+
+base () {
+    local   file="${NGINX_CONFDIR}/conf-available.d/${VHOST}.conf"
+
+    [ -f "${file}" ] || die "vhost ${VHOST} not available"
+
+    cat  "${file}" > "${NGINX_VHOST}"
+}
+
+canonical () {
+    local listen=`cat "${NGINX_VHOST}" | grep -oE '^.*listen.*$' | tail -n2 | tr '\n' '@'`
+    local file="${NGINX_CONFDIR}/conf-available.d/trait/${VHOST_CANONICAL}.conf"
+
+    [ -z "${VHOST_CANONICAL}" ] && return
+    [ -f "${file}" ] || die "canonical trait ${VHOST_CANONICAL} not available"
+
+    cat  "${file}" | sed -e "s/^.*{{LISTEN}}$/${listen}/g;s/@/\n/g" >> "${NGINX_VHOST}"
+}
+
+customization () {
+    [ "${VHOST_CUSTOMIZATION}" = "true" ] && {
+        mkdir -p             nginx;
+        chown nginx:www-data nginx || die "chown couldn't be applied";
+        chmod 750            nginx || die "chmod couldn't be applied";
+    } || {
+        sed -i -e '/customization.conf;$/d' "${NGINX_VHOST}";
+    }
+}
+
+base
+canonical
+customization
 
 exec nginx "$@"
