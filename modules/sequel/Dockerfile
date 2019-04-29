@@ -4,14 +4,14 @@ ARG        MOD_HEADERS_URL=https://github.com/openresty/headers-more-nginx-modul
 
 WORKDIR    /usr/local/src
 
-RUN        apk add coreutils grep gcc libc-dev make openssl-dev pcre-dev zlib-dev linux-headers curl gnupg1 libxslt-dev gd-dev geoip-dev
+RUN        apk add coreutils grep gcc libc-dev make openssl-dev pcre-dev zlib-dev linux-headers libxslt-dev gd-dev geoip-dev perl-dev libedit-dev mercurial bash alpine-sdk findutils
 RUN        mkdir nginx nginx-headers-more
 RUN        curl -L ${MOD_HEADERS_URL} | tar -C nginx-headers-more --strip-components=1 -xvzf -
 RUN        curl -L http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz | tar -C nginx --strip-components=1 -xvzf -
 
 WORKDIR    /usr/local/src/nginx
 
-RUN        ./configure --add-dynamic-module=../nginx-headers-more `2>&1 nginx -V | grep -oP '(?<=configure arguments: ).*'`
+RUN        sh -c "./configure --add-dynamic-module=../nginx-headers-more `2>&1 nginx -V | grep -oP '(?<=configure arguments: ).*'`"
 RUN        make modules
 RUN        cp -npv objs/*.so /etc/nginx/modules
 RUN        find /etc/nginx/modules/ -iname '*module.so' -exec sh -c 'echo $1; sed -i "1i load_module modules/`basename $1`\;" /etc/nginx/nginx.conf' -- {} \;
@@ -33,6 +33,7 @@ ENV        NGINX_CONFDIR=/etc/nginx
 WORKDIR    ${NGINX_CONFDIR}
 
 RUN        deluser                 xfs               \
+ &&        delgroup                www-data          \
  &&        addgroup -g 33 -S       www-data          \
  &&        adduser  -u 33 -D -S -G www-data www-data
 

@@ -14,8 +14,8 @@ env:
     - REPOSITORY="encodeering"
     - BRANCH="$TRAVIS_BRANCH"
   matrix:
-    - BASE="debian" ARCH="amd64" VERSION="1.14"
-    - BASE="alpine" ARCH="amd64" VERSION="1.14"
+    - BASE="debian" ARCH="amd64" VERSION="1.16"
+    - BASE="alpine" ARCH="amd64" VERSION="1.16"
 
 install:
 - bash <(curl https://raw.githubusercontent.com/encodeering/docker-ci/master/install.sh) 0.1.11
