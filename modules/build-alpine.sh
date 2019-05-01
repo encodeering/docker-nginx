@@ -7,6 +7,8 @@ import com.encodeering.ci.docker
 
 docker-pull "$REPOSITORY/alpine-$ARCH:3.9" "alpine:3.9"
 
+docker-patch patch "$PROJECT"
+
 docker-build -t "nginx:alpine" "$PROJECT/stable/alpine"
 docker-build --suffix sequel sequel
 
