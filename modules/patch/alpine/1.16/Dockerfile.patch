@@ -1,7 +1,0 @@
-diff --git a/stable/alpine/Dockerfile b/stable/alpine/Dockerfile
-index 00a6b29..f95e054 100755
---- a/stable/alpine/Dockerfile
-+++ b/stable/alpine/Dockerfile
-@@ -63 +63 @@ RUN set -x \
--            && su - nobody -s /bin/sh -c " \
-+            && su   nobody -s /bin/sh -c " \
