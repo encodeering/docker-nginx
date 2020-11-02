@@ -38,8 +38,35 @@ customization () {
     }
 }
 
+upstream () {
+    local source="${NGINX_CONFDIR}/upstream.json"
+    local file="${NGINX_CONFDIR}/conf-application.d/upstream.conf"
+
+    [ -f "${source}" ] || return 0
+
+    upstreamconfig () {
+        local var="${1}"
+        local hostname="${2}"
+        local port="${3}"
+
+        if [   "${port}" == "null" ]; then
+            unset port
+        fi
+
+        echo "set \$${var} `getent hosts "${hostname}" | awk '{ print $1 }'`${port+:}${port};"
+    }
+
+    export -f upstreamconfig
+
+    # [{"var":"php","hostname":"php","port":9000},{"var":"redis","hostname":"$REDISHOST"}]
+    envsubst < "${source}" | jq -r '.[] | "upstreamconfig \(.var|@sh) \(.hostname|@sh) \(.port|@sh)"' | xargs -I{} bash -c {} > "${file}"
+
+    unset     upstreamconfig
+}
+
 base
 canonical
 customization
+upstream
 
 exec nginx "$@"

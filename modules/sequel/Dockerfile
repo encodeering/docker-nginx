@@ -32,6 +32,8 @@ ENV        NGINX_CONFDIR=/etc/nginx
 
 WORKDIR    ${NGINX_CONFDIR}
 
+RUN        apk add --no-cache jq
+
 RUN        deluser                 xfs               \
  &&        delgroup                www-data          \
  &&        addgroup -g 33 -S       www-data          \
