@@ -22,7 +22,7 @@ canonical () {
     local listen=`cat "${NGINX_VHOST}" | grep -oE '^.*listen.*$' | tail -n2 | tr '\n' '@'`
     local file="${NGINX_CONFDIR}/conf-available.d/trait/${VHOST_CANONICAL}.conf"
 
-    [ -z "${VHOST_CANONICAL}" ] && return
+    [ -z "${VHOST_CANONICAL}" ] && return 0
     [ -f "${file}" ] || die "canonical trait ${VHOST_CANONICAL} not available"
 
     cat  "${file}" | sed -e "s/^.*{{LISTEN}}$/${listen}/g;s/@/\n/g" >> "${NGINX_VHOST}"
