@@ -58,8 +58,10 @@ upstream () {
 
     export -f upstreamconfig
 
+    echo -n > "${file}"
+
     # [{"var":"php","hostname":"php","port":9000},{"var":"redis","hostname":"$REDISHOST"}]
-    envsubst < "${source}" | jq -r '.[] | "upstreamconfig \(.var|@sh) \(.hostname|@sh) \(.port|@sh)"' | xargs -I{} bash -c {} > "${file}"
+    envsubst < "${source}" | jq -r '.[] | "upstreamconfig \(.var|@sh) \(.hostname|@sh) \(.port|@sh)"' | xargs -I{} bash -c {} >> "${file}"
 
     unset     upstreamconfig
 }
