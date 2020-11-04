@@ -40,7 +40,7 @@ customization () {
 
 upstream () {
     local source="${NGINX_CONFDIR}/upstream.json"
-    local file="${NGINX_CONFDIR}/conf-application.d/upstream.conf"
+    local file="${NGINX_CONFDIR}/conf-global.d/upstream.conf"
 
     [ -f "${source}" ] || return 0
 
@@ -53,7 +53,11 @@ upstream () {
             unset port
         fi
 
-        echo "set \$${var} `getent ahostsv4 "${hostname}" | awk '{ print $1 }' | head -n 1`${port+:}${port};"
+        cat <<EOF
+map \$host \$${var} {
+    default `getent ahostsv4 "${hostname}" | awk '{ print $1 }' | head -n 1`${port+:}${port};
+}
+EOF
     }
 
     export -f upstreamconfig
