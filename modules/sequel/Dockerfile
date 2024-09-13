@@ -1,6 +1,6 @@
 FROM       nginx:alpine AS modules
 
-ARG        MOD_HEADERS_URL=https://github.com/openresty/headers-more-nginx-module/archive/v0.33.tar.gz
+ARG        MOD_HEADERS_URL=https://github.com/openresty/headers-more-nginx-module/archive/v0.37.tar.gz
 
 WORKDIR    /usr/local/src
 
@@ -32,10 +32,9 @@ ENV        NGINX_CONFDIR=/etc/nginx
 
 WORKDIR    ${NGINX_CONFDIR}
 
-RUN        apk add --no-cache jq
+RUN        apk add --no-cache jq bash
 
-RUN        deluser                 xfs               \
- &&        delgroup                www-data          \
+RUN        delgroup                www-data          \
  &&        addgroup -g 33 -S       www-data          \
  &&        adduser  -u 33 -D -S -G www-data www-data
 

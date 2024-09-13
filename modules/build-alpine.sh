@@ -5,9 +5,10 @@ set -e
 import com.encodeering.ci.config
 import com.encodeering.ci.docker
 
-docker-pull "$REPOSITORY/alpine-$ARCH:3.11" "alpine:3.11"
+docker-pull "$REPOSITORY/alpine-$ARCH:3.20" "alpine:3.20"
 
-docker-build -t "nginx:alpine" "$PROJECT/stable/alpine"
+docker-build --suffix slim -t "nginx:${VERSION}-alpine-slim" "$PROJECT/stable/alpine-slim"
+docker-build               -t "nginx:alpine"                 "$PROJECT/stable/alpine"
 docker-build --suffix sequel sequel
 
 docker-verify --suffix sequel -V 2>&1 | dup | contains "nginx/${VERSION}"
