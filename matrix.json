@@ -1,0 +1,10 @@
+{
+    "concourse": {
+        "dind": "0.1.17"
+    },
+    "platforms": ["amd64", "armhf"],
+    "pipelines": [
+        { "project": "nginx", "base": "debian", "version": "1.26.2", "variant": "" },
+        { "project": "nginx", "base": "alpine", "version": "1.26.2", "variant": "" }
+    ]
+}
